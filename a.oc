@@ -1,0 +1,121 @@
+format long g
+j = 1i;
+
+V1  = 480;
+Z1  = 1 + 5*j;
+Z2  = 1 + 5*j;
+Z3  = 20 + 40*j;
+a12 = 1/10;
+a23 = 5/3;
+a13 = a12*a23;
+
+disp("REGIÃO 1 ===================================")
+Z3_1 = Z3*a13^2;
+Z2_1 = Z2*a12^2;
+Z1_  = Z1 + Z2_1 + Z3_1;
+to_pd(Z1_)
+I1 = V1/Z1_;
+to_pd(I1)
+I=I1;
+V=V1;
+I_conj = conj(I);
+S1 = V*I_conj;
+to_pd(S1)
+S1_mod = abs(S1);
+P1 = real(S1);
+Q1 = imag(S1);
+cos_phi1 = P1/S1_mod;
+phi1 = acos(cos_phi1);
+fprintf('S_mod = %.4f\n', S1_mod)
+fprintf('P = %.4f\n', P1)
+fprintf('Q = %.4f\n', Q1)
+fprintf('cos_phi = %.4f\n', cos_phi1)
+fprintf('phi = %.4f rad = %.4f°\n', phi1, phi1*180/pi)
+
+disp("REGIÃO 2 ===================================")
+V1_2 = V1/a12;
+Z3_2 = Z3*a23^2;
+Z1_2 = Z1*1/a12^2;
+Z2_  = Z1_2 + Z2 + Z3_2;
+to_pd(Z2_)
+I2 = V1_2/Z2_;
+to_pd(I2)
+I=I2;
+V=V1_2;
+I_conj = conj(I);
+S2 = V*I_conj;
+to_pd(S2)
+S2_mod = abs(S2);
+P2 = real(S2);
+Q2 = imag(S2);
+cos_phi2 = P2/S2_mod;
+phi2 = acos(cos_phi2);
+fprintf('S_mod = %.4f\n', S2_mod)
+fprintf('P = %.4f\n', P2)
+fprintf('Q = %.4f\n', Q2)
+fprintf('cos_phi = %.4f\n', cos_phi2)
+fprintf('phi = %.4f rad = %.4f°\n', phi2, phi2*180/pi)
+
+disp("REGIÃO 3 ===================================")
+V1_3 = V1/a13;
+Z1_3 = Z1*1/a13^2;
+Z2_3 = Z2*1/a23^2;
+Z3_  = Z1_3 + Z2_3 + Z3;
+to_pd(Z3_)
+I3 = V1_3/Z3_;
+to_pd(I3)
+I=I3;
+V=V1_3;
+I_conj = conj(I);
+S3 = V*I_conj;
+to_pd(S3)
+S3_mod = abs(S3);
+P3 = real(S3);
+Q3 = imag(S3);
+cos_phi3 = P3/S3_mod;
+phi3 = acos(cos_phi3);
+fprintf('S_mod = %.4f\n', S3_mod)
+fprintf('P = %.4f\n', P3)
+fprintf('Q = %.4f\n', Q3)
+fprintf('cos_phi = %.4f\n', cos_phi3)
+fprintf('phi = %.4f rad = %.4f°\n', phi3, phi3*180/pi)
+
+disp("═══════════════════════════════════════════════════════════════════")
+disp("TABELA COMPARATIVA - VALIDAÇÃO DAS 3 REGIÕES")
+disp("═══════════════════════════════════════════════════════════════════")
+fprintf('\n')
+fprintf('╔═════════════════╦══════════════════╦══════════════════╦══════════════════╗\n')
+fprintf('║ Grandeza        ║    Região 1      ║    Região 2      ║    Região 3      ║\n')
+fprintf('╠═════════════════╬══════════════════╬══════════════════╬══════════════════╣\n')
+fprintf('║ V (V)           ║ %16.4f ║ %16.4f ║ %16.4f ║\n', abs(V1), abs(V1_2), abs(V1_3))
+fprintf('║ V∠ (°)          ║ %16.4f ║ %16.4f ║ %16.4f ║\n', angle(V1)*180/pi, angle(V1_2)*180/pi, angle(V1_3)*180/pi)
+fprintf('╟─────────────────╫──────────────────╫──────────────────╫──────────────────╢\n')
+fprintf('║ I (A)           ║ %16.4f ║ %16.4f ║ %16.4f ║\n', abs(I1), abs(I2), abs(I3))
+fprintf('║ I∠ (°)          ║ %16.4f ║ %16.4f ║ %16.4f ║\n', angle(I1)*180/pi, angle(I2)*180/pi, angle(I3)*180/pi)
+fprintf('╟─────────────────╫──────────────────╫──────────────────╫──────────────────╢\n')
+fprintf('║ |Z| (Ω)         ║ %16.4f ║ %16.4f ║ %16.4f ║\n', abs(Z1_), abs(Z2_), abs(Z3_))
+fprintf('║ Z∠ (°)          ║ %16.4f ║ %16.4f ║ %16.4f ║\n', angle(Z1_)*180/pi, angle(Z2_)*180/pi, angle(Z3_)*180/pi)
+fprintf('║ R (Ω)           ║ %16.4f ║ %16.4f ║ %16.4f ║\n', real(Z1_), real(Z2_), real(Z3_))
+fprintf('║ X (Ω)           ║ %16.4f ║ %16.4f ║ %16.4f ║\n', imag(Z1_), imag(Z2_), imag(Z3_))
+fprintf('╟─────────────────╫──────────────────╫──────────────────╫──────────────────╢\n')
+fprintf('║ |S| (VA)        ║ %16.4f ║ %16.4f ║ %16.4f ║\n', S1_mod, S2_mod, S3_mod)
+fprintf('║ P (W)           ║ %16.4f ║ %16.4f ║ %16.4f ║\n', P1, P2, P3)
+fprintf('║ Q (VAr)         ║ %16.4f ║ %16.4f ║ %16.4f ║\n', Q1, Q2, Q3)
+fprintf('║ cos(φ)          ║ %16.4f ║ %16.4f ║ %16.4f ║\n', cos_phi1, cos_phi2, cos_phi3)
+fprintf('║ φ (°)           ║ %16.4f ║ %16.4f ║ %16.4f ║\n', phi1*180/pi, phi2*180/pi, phi3*180/pi)
+fprintf('╚═════════════════╩══════════════════╩══════════════════╩══════════════════╝\n')
+
+% Verificar se os valores são iguais (com tolerância)
+tolerancia = 0.01; % 0.01%
+diff_S = max([abs(S1_mod-S2_mod), abs(S1_mod-S3_mod), abs(S2_mod-S3_mod)]) / S1_mod * 100;
+diff_P = max([abs(P1-P2), abs(P1-P3), abs(P2-P3)]) / P1 * 100;
+diff_Q = max([abs(Q1-Q2), abs(Q1-Q3), abs(Q2-Q3)]) / Q1 * 100;
+
+fprintf('\n')
+if (diff_S < tolerancia && diff_P < tolerancia && diff_Q < tolerancia)
+    fprintf('✓ VALIDAÇÃO OK: Conservação de potência verificada!\n')
+    fprintf('  (diferenças < %.2f%%)\n', tolerancia)
+else
+    fprintf('✗ ATENÇÃO: Diferenças detectadas!\n')
+    fprintf('  Δ|S| = %.4f%%, ΔP = %.4f%%, ΔQ = %.4f%%\n', diff_S, diff_P, diff_Q)
+end

@@ -1,0 +1,88 @@
+
+
+V1  = 480
+Z1  = 1 + 5*j;
+Z2  = 1 + 5*j;
+Z3  = 20 + 40*j;
+a12 = 1/10;
+a23 = 5/3;
+
+a13 = a12*a23
+
+disp("regiao 1 -----------------------------------")
+Z3_1 = Z3*a13^2
+Z2_1 = Z2*a12^2
+Z1_  = Z1 + Z2_1 + Z3_1
+to_pd(Z1_)
+
+I1 = V1/Z1_
+to_pd(I1)
+
+I=I1
+V=V1
+
+I_conj = conj(I);
+S = V*I_conj
+to_pd(S)
+S_mod = abs(S)
+
+P = real(S)
+Q = imag(S)
+
+cos_phi = P/S_mod
+
+phi = acos(cos_phi)
+r2d(phi)
+
+disp("regiao 2 -----------------------------------")
+V1_2 = V1/a12
+Z3_2 = Z3*a23^2
+Z1_2 = Z1*1/a12^2
+Z2_  = Z1_2 + Z2 + Z3_2
+to_pd(Z2_)
+
+I2 = V1_2/Z2_
+to_pd(I2)
+
+I=I2
+V=V1_2
+
+I_conj = conj(I);
+S = V*I_conj
+to_pd(S)
+S_mod = abs(S)
+
+P = real(S)
+Q = imag(S)
+
+cos_phi = P/S_mod
+
+phi = acos(cos_phi)
+r2d(phi)
+
+disp("regiao 3 -----------------------------------")
+V1_3 = V1/a13
+Z1_3 = Z1*1/a13^2
+Z2_3 = Z2*1/a23^2
+Z3_  = Z1_3 + Z2_3 + Z3
+to_pd(Z3_)
+
+I3 = V1_3/Z3_
+to_pd(I3)
+
+I=I3
+V=V1_3
+
+I_conj = conj(I);
+S = V*I_conj
+to_pd(S)
+S_mod = abs(S)
+
+P = real(S)
+Q = imag(S)
+
+cos_phi = P/S_mod
+
+phi = acos(cos_phi)
+r2d(phi)
+

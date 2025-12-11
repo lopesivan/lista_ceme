@@ -1,0 +1,56 @@
+% --- Dados ---
+T1 = 100/1000;
+T2 = 1000/500;
+T3 = 1000/200;
+
+% I = 90.708628 -97.013487j  =  132.814427 ∠ -46.9236°
+% I = 9.070863 -9.701349j  =  13.281443 ∠ -46.9236°
+% I = 18.141726 -19.402697j  =  26.562885 ∠ -46.9236°
+% I = 9.070863 -9.701349j  =  13.281443 ∠ -46.9236°
+% I = 45.354314 -48.506744j  =  66.407213 ∠ -46.9236°
+
+I1 = 90.708628 -j*97.013487;
+I2 = 9.070863 -j*9.701349;
+I3 = 18.141726 -j*19.402697;
+I4 = 9.070863 -j*9.701349;
+I5 = 45.354314 -j*48.506744;
+
+
+disp("Corrente em (1):")
+Imalha1 = I1;
+print_cplx(Imalha1)
+
+% -- Cálculo:
+Imalha2 = Imalha1 * (T1);
+Imalha3 = Imalha1 * T2*T1;
+
+Imalha4 = Imalha1 * T1;
+Imalha5 = Imalha1 * T3*T1;
+
+fprintf('\n');
+disp("Corrente em (2):")
+disp("obtido:")
+print_cplx(Imalha2)
+disp("esperado:")
+print_cplx(I2)
+
+fprintf('\n');
+disp("Corrente em (3):")
+disp("obtido:")
+print_cplx(Imalha3)
+disp("esperado:")
+print_cplx(I3)
+
+fprintf('\n');
+disp("Corrente em (4):")
+disp("obtido:")
+print_cplx(Imalha4)
+disp("esperado:")
+print_cplx(I4)
+
+fprintf('\n');
+disp("Corrente em (5):")
+disp("obtido:")
+print_cplx(Imalha5)
+disp("esperado:")
+print_cplx(I5)

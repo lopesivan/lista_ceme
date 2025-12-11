@@ -1,0 +1,54 @@
+% --- Dados ---
+T1 = 100/1000;
+T2 = 1000/500;
+T3 = 1000/200;
+
+%Z1 = 0.4885 +0.5225j    =  0.7153 ∠ 46.9236°
+%Z2 = 48.8519 +52.2475j  =  71.5284 ∠ 46.9236°
+%Z3 = 12.2130 +13.0619j  =  17.8821 ∠ 46.9236°
+%Z4 = 48.8519 +52.2475j  =  71.5284 ∠ 46.9236°
+%Z5 = 1.9541 +2.0899j    =  2.8611 ∠ 46.9236°
+
+Z1 = 0.4885  + j*0.5225;
+Z2 = 48.8519 + j*52.2475;
+Z3 = 12.2130 + j*13.0619;
+Z4 = 48.8519 + j*52.2475;
+Z5 = 1.9541  + j*2.0899;
+
+disp("impedancia equivalente em (5):")
+Zeq5 = Z5;
+print_cplx(Zeq5)
+
+% -- Cálculo:
+Zeq1 = Zeq5 * (T1)^2 * (T3)^2;
+Zeq2 = Zeq5 * (T3)^2;
+Zeq3 = Zeq5 * (1/T2)^2 * (T3)^2;
+Zeq4 = Zeq5 * (T3)^2;
+
+fprintf('\n');
+disp("impedancia equivalente em (1):")
+disp("obtido:")
+print_cplx(Zeq1)
+disp("esperado:")
+print_cplx(Z1)
+
+fprintf('\n');
+disp("impedancia equivalente em (2):")
+disp("obtido:")
+print_cplx(Zeq2)
+disp("esperado:")
+print_cplx(Z2)
+
+fprintf('\n');
+disp("impedancia equivalente em (3):")
+disp("obtido:")
+print_cplx(Zeq3)
+disp("esperado:")
+print_cplx(Z3)
+
+fprintf('\n');
+disp("impedancia equivalente em (4):")
+disp("obtido:")
+print_cplx(Zeq4)
+disp("esperado:")
+print_cplx(Z4)

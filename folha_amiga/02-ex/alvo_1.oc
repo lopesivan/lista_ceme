@@ -1,0 +1,46 @@
+clear; clc;
+
+fprintf('Alvo: Trafo 1, lado de 100V \n');
+
+% --- Dados ---
+%S  = 10E3
+T1 = 480/220;
+T2 = 480/127;
+
+V1  = 480;
+Z1  = 2.3*j;
+Z2  = 1.5*j;
+Z3  = 0.4*j;
+ZL2 = to_rd(10, 30);
+ZL3 = to_rd(2, -20);
+
+% --- Cálculos ---
+Vg_  = V1;
+Z1_  = Z1;
+Z2_  = Z2 * (T1)^2;
+Z3_  = Z3 * (T2)^2;
+ZL2_ = ZL2 * (T1)^2;
+ZL3_ = ZL3 * (T2)^2;
+
+Zeq = Z1_ + z_p([(Z2_+ZL2_) (Z3_+ZL3_)]);
+I1  = Vg_/Zeq;
+I2  = I1 * (T1);
+I3  = I1 * (T2);
+
+V = Vg_;
+Z = Zeq;
+I = I1;
+
+% --- Forma polar de Z e I (módulo e ângulo em graus) ---
+print_cplx(Z1_, 'Z1_')
+print_cplx(Z2_, 'Z2_')
+print_cplx(Z3_, 'Z3_')
+print_cplx(ZL2_, 'ZL2_')
+print_cplx(ZL3_, 'ZL3_')
+
+print_cplx(Z, 'Zeq')
+print_cplx(I1, 'I1')
+print_cplx(I2, 'I2')
+print_cplx(I3, 'I2')
+
+calc_power(V, I);

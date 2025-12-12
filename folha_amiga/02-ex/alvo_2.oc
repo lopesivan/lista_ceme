@@ -1,56 +1,56 @@
 clear; clc;
 
-fprintf('Alvo: Trafo 2, lado de 1000V \n');
+fprintf('Alvo: Trafo 1, lado de 100V \n');
 
 % --- Dados ---
-T1 = 100/1000;
-T2 = 1000/500;
-T3 = 1000/200;
+%S  = 10E3
+T1 = 480/220;
+T2 = 480/127;
+T3 = 220/127;
 
-Va = 95;
-Za = 0.2*j;
-Zb = 10*j;
-Zc = 20 + 10*j;
-Zd = 15*j;
-Ze = 5 + 3*j;
+V1  = 480;
+Z1  = 2.3*j;
+Z2  = 1.5*j;
+Z3  = 0.4*j;
+ZL2 = to_rd(10, 30);
+ZL3 = to_rd(2, -20);
 
 % --- Cálculos ---
-Va_ = Va/(T1);
-Za_ = Za * (1/T1)^2;
-Zb_ = Zb;
-Zc_ = Zc*(T2)^2;
-Zd_ = Zd;
-Ze_ = Ze * (T3)^2;
+Vg_  = V1*(1/T1);
+Z1_  = Z1*(1/T1)^2;
+Z2_  = Z2;
+ZL2_ = ZL2;
+Z3_  = Z3 * (T3)^2;
+ZL3_ = ZL3 * (T3)^2;
 
-Zeq = Za_ + z_p([(Zb_+Zc_) (Zd_+Ze_)]);
-Ic  = Va_/Zeq;
+Zeq = Z1_ + z_p([(Z2_+ZL2_) (Z3_+ZL3_)]);
+I2  = Vg_/Zeq;
 
-V = Va_;
+V = Vg_;
 Z = Zeq;
-I = Ic;
+I = I2;
 
-% --- Forma polar de Z e I (módulo e ângulo em graus) ---
-[Z_mod, Z_ang] = to_pd(Z);   % Z_ang em graus
-[I_mod, I_ang] = to_pd(I);   % I_ang em graus
+print_cplx(Vg_, 'Vg_')
+print_cplx(Z1_, 'Z1_')
+print_cplx(Z2_, 'Z2_')
+print_cplx(Z3_, 'Z3_')
+print_cplx(ZL2_, 'ZL2_')
+print_cplx(ZL3_, 'ZL3_')
 
-% --- Impressão Z e I em forma retangular e polar ---
-fprintf('Z = %.4f %+.4fj  =  %.4f ∠ %.4f°\n', real(Z), imag(Z), Z_mod, Z_ang);
-fprintf('I = %.6f %+.6fj  =  %.6f ∠ %.4f°\n', real(I), imag(I), I_mod, I_ang);
+print_cplx(Z, 'Zeq')
+print_cplx(I2, 'I2')
 
-% --- Potência complexa ---
-I_conj   = conj(I);
-S        = V*I_conj;
-S_mod    = abs(S);
-P        = real(S);
-Q        = imag(S);
-cos_phi  = P/S_mod;
-phi      = acos(cos_phi);
+I2_ = I2 * (Z3_ + ZL3_)/(Z2_ + ZL2_ + Z3_ + ZL3_);
+I3_ = I2 * (Z2_ + ZL2_)/(Z2_ + ZL2_ + Z3_ + ZL3_);
+print_cplx(I2_, 'I2_')
+print_cplx(I3_, 'I3_')
 
-fprintf('\n');
-fprintf('S_mod   = %.4f\n', S_mod);
-fprintf('P       = %.4f\n', P);
-fprintf('Q       = %.4f\n', Q);
-fprintf('cos_phi = %.4f\n', cos_phi);
-fprintf('phi     = %.4f rad = %.4f°\n', phi, phi*180/pi);
+I3  = I3_ * (T3);
+print_cplx(I3, 'I3')
 
+I1  = I2 * (1/T1);
+print_cplx(I1 * (1/T1), 'I1')
+print_cplx(I1, 'I primário  ')
+print_cplx(I2, 'I secundário')
+print_cplx(I3, 'I terciário ')
 

@@ -24,8 +24,6 @@ ZL3_ = ZL3 * (T2)^2;
 
 Zeq = Z1_ + z_p([(Z2_+ZL2_) (Z3_+ZL3_)]);
 I1  = Vg_/Zeq;
-I2  = I1 * (T1);
-I3  = I1 * (T2);
 
 V = Vg_;
 Z = Zeq;
@@ -40,7 +38,19 @@ print_cplx(ZL3_, 'ZL3_')
 
 print_cplx(Z, 'Zeq')
 print_cplx(I1, 'I1')
-print_cplx(I2, 'I2')
-print_cplx(I3, 'I2')
 
-calc_power(V, I);
+I2_ = I1 * (Z3_ + ZL3_)/(Z2_ + ZL2_ + Z3_ + ZL3_);
+I3_ = I1 * (Z2_ + ZL2_)/(Z2_ + ZL2_ + Z3_ + ZL3_);
+
+print_cplx(I2_, 'I2_')
+print_cplx(I3_, 'I3_')
+I2  = I2_ * (T1);
+I3  = I3_ * (T2);
+
+print_cplx(I1, 'I primário  ')
+print_cplx(I2, 'I secundário')
+print_cplx(I3, 'I terciário ')
+
+
+
+

@@ -1,0 +1,103 @@
+clear; clc;
+
+fprintf('Alvo: Trafo 1, lado de 100V \n');
+
+% --- Dados ---
+%S  = 10E3
+T1 = 480/220;
+T2 = 480/127;
+T3 = 220/127;
+
+V1  = 480;
+Z1  = 2.3*j;
+Z2  = 1.5*j;
+Z3  = 0.4*j;
+ZL2 = to_rd(10, 30);
+ZL3 = to_rd(2, -20);
+
+% --- Cálculos ---
+Vg_  = V1
+Z1_  = Z1;
+Z2_  = Z2 * (T1)^2;
+Z3_  = Z3 * (T2)^2;
+ZL2_ = ZL2 * (T1)^2;
+ZL3_ = ZL3 * (T2)^2;
+
+Zeq1 = Z1_ + z_p([(Z2_+ZL2_) (Z3_+ZL3_)]);
+I1   = Vg_/Zeq1;
+
+% --- Forma polar de Z e I (módulo e ângulo em graus) ---
+print_cplx(Z1_, 'Z1_')
+print_cplx(Z2_, 'Z2_')
+print_cplx(Z3_, 'Z3_')
+print_cplx(ZL2_, 'ZL2_')
+print_cplx(ZL3_, 'ZL3_')
+
+disp("=====================================================")
+disp("Analise regiao 1: ===================================")
+disp("=====================================================")
+print_cplx(Zeq1, 'Zeq1')
+print_cplx(I1, 'I1')
+
+I2_ = I1 * (Z3_ + ZL3_)/(Z2_ + ZL2_ + Z3_ + ZL3_);
+I3_ = I1 * (Z2_ + ZL2_)/(Z2_ + ZL2_ + Z3_ + ZL3_);
+
+print_cplx(I2_, 'I2_')
+print_cplx(I3_, 'I3_')
+I2  = I2_ * (T1);
+I3  = I3_ * (T2);
+
+print_cplx(I1, 'I primário  ')
+print_cplx(I2, 'I secundário')
+print_cplx(I3, 'I terciário ')
+
+calc_power(Vg_, I1);
+
+disp("=====================================================")
+disp("Analise regiao 2: ===================================")
+disp("-> utilizando os valores da região 1 ================")
+disp("=====================================================")
+Vg_ = V1 * (1/T1)
+Zeq2 = Zeq1 * (1/T1)^2
+I   = I1  * T1
+print_cplx(Zeq2, 'Zeq2')
+print_cplx(I, 'I')
+
+I2_ = I2_ * (T1);
+I3_ = I3_ * (T1);
+print_cplx(I2_, 'I2_')
+print_cplx(I3_, 'I3_')
+
+I2  = I2;
+I3  = I3_ * (T3);
+
+print_cplx(I1, 'I primário  ')
+print_cplx(I2, 'I secundário')
+print_cplx(I3, 'I terciário ')
+
+calc_power(Vg_,I);
+
+
+disp("=====================================================")
+disp("Analise regiao 3: ===================================")
+disp("-> utilizando os valores da região 1 ================")
+disp("=====================================================")
+Vg_ = V1 * (1/T2)
+Zeq3 = Zeq1 * (1/T2)^2;
+I   = I1   * T2
+print_cplx(Zeq3, 'Zeq3')
+print_cplx(I, 'I');
+
+I2_ = I2_ * (T2);
+I3_ = I3_ * (T2);
+print_cplx(I2_, 'I2_')
+print_cplx(I3_, 'I3_')
+
+I2  = I2;
+I3  = I3_ * (T3);
+
+print_cplx(I1, 'I primário  ')
+print_cplx(I2, 'I secundário')
+print_cplx(I3, 'I terciário ')
+
+calc_power(Vg_,I);

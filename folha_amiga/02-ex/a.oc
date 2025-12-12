@@ -1,0 +1,68 @@
+clear; clc;
+j = 1i;
+
+% --- Dados ---
+% S  = 10E3; % se quiser usar depois para conferência
+T1 = 480/220;
+T2 = 480/127;
+
+V1  = 480;
+Z1  = 2.3*j;
+Z2  = 1.5*j;
+Z3  = 0.4*j;
+ZL2 = to_rd(10,  30);   % |Z|=10,  ∠30°
+ZL3 = to_rd(2,  -20);   % |Z|=2,   ∠-20°
+
+% --- Cálculos referidos ao primário ---
+Vg_  = V1;
+Z1_  = Z1;
+Z2_  = Z2  * (T1)^2;
+Z3_  = Z3  * (T2)^2;
+ZL2_ = ZL2 * (T1)^2;
+ZL3_ = ZL3 * (T2)^2;
+
+% impedância equivalente vista do primário
+Zeq_par = z_p([ (Z2_ + ZL2_)  (Z3_ + ZL3_) ]);
+Zeq     = Z1_ + Zeq_par;
+
+% Corrente no primário (referido)
+I1 = Vg_ / Zeq;
+
+% Tensão nos ramos em paralelo (após Z1_)
+Vp = Vg_ - I1 * Z1_;
+
+% Correntes referidas ao primário nos ramos 2 e 3
+I2_ = Vp / (Z2_ + ZL2_);
+I3_ = Vp / (Z3_ + ZL3_);
+
+% Correntes reais nos enrolamentos 2 e 3
+I2 = I2_ / T1;
+I3 = I3_ / T2;
+
+% --- Impressão das impedâncias referidas ---
+fprintf('Impedâncias referidas ao primário:\n');
+print_cplx(Z1_,  'Z1_');
+print_cplx(Z2_,  'Z2_');
+print_cplx(Z3_,  'Z3_');
+print_cplx(ZL2_, 'ZL2_');
+print_cplx(ZL3_, 'ZL3_');
+
+fprintf('\nImpedância equivalente vista do primário:\n');
+print_cplx(Zeq,  'Zeq');
+
+% --- Correntes por enrolamento ---
+fprintf('\nCorrentes por enrolamento:\n');
+print_cplx(I1, 'I1');   % primário 480 V
+print_cplx(I2, 'I2');   % secundário 220 V
+print_cplx(I3, 'I3');   % terciário 127 V
+
+% (Opcional) Conferência de potência aparente em cada lado:
+S1 = V1 * conj(I1);
+S2 = 220 * conj(I2);
+S3 = 127 * conj(I3);
+
+fprintf('\nPotências aparentes em cada enrolamento:\n');
+print_cplx(S1, 'S1');
+print_cplx(S2, 'S2');
+print_cplx(S3, 'S3');
+
